@@ -35,7 +35,12 @@
       </tr>
        <tr>
            <td>
-           <img src="{% static book.pic_path %}" width="100" />
+           {% if book.picture %}
+               <img src="{{ book.picture.url }}" width="120" height="160" style="object-fit:cover;" />
+               {% else %}
+               <img src="{% static 'img/placeholder_book.png' %}" width="120" height="160" />
+               {% endif %}
+
          </td>
          <td>
             {{ book.name }}

@@ -53,8 +53,11 @@ def postbook(request):
 def displaybooks(request):
     books = Book.objects.all().order_by('-publishdate')
 
-    owned_book_ids = PurchasedBook.objects.filter(user=request.user)\
-                        .values_list('book_id', flat=True)
+    if request.user.is_authenticated:
+        owned_book_ids = PurchasedBook.objects.filter(user=request.user) \
+            .values_list('book_id', flat=True)
+    else:
+        owned_book_ids = []
 
     return render(request, "bookMng/displaybooks.html", {
         "books": books,
@@ -65,7 +68,6 @@ def displaybooks(request):
 def book_detail(request, book_id):
     book = Book.objects.get(id=book_id)
 
-    book.pic_path = book.picture.url[14:]
     return render(request,
                   'bookMng/book_detail.html',
                   {
@@ -85,19 +87,22 @@ class Register(CreateView):
 
 
 def mybooks(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect("/login")
+
     purchased_ids = PurchasedBook.objects.filter(
         user=request.user
     ).values_list("book_id", flat=True)
 
     books = Book.objects.filter(id__in=purchased_ids)
-    for b in books:
-        b.pic_path = b.picture.url[14:]
+
     return render(request,
                   'bookMng/mybooks.html',
                   {
                       'item_list': MainMenu.objects.all(),
                       'books': books
                   })
+
 
 
 def book_delete(request, book_id):

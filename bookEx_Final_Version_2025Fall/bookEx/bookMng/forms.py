@@ -3,12 +3,14 @@ from django.forms import ModelForm
 from .models import Book
 
 
-class BookForm(ModelForm):
+
+class BookForm(forms.ModelForm):
     class Meta:
         model = Book
-        fields = [
-            'name',
-            'web',
-            'price',
-            'picture',
-        ]
+        fields = ['name', 'author', 'price', 'summary', 'picture']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'author': forms.TextInput(attrs={'class': 'form-control'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control'}),
+            'summary': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+        }
