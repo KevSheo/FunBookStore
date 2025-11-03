@@ -63,8 +63,6 @@ class PurchasedBook(models.Model):
         unique_together = ("user", "book")
 
 
-
-
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     book = models.ForeignKey('Book', on_delete=models.CASCADE, related_name='comments')

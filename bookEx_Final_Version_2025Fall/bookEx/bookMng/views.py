@@ -90,13 +90,14 @@ def book_detail(request, book_id):
     else:
         form = CommentForm()
 
-        # render the template
+    # ✅ render always happens here — outside the if/else
     return render(request, 'bookMng/book_detail.html', {
         'item_list': MainMenu.objects.all(),
         'book': book,
         'comments': comments,
         'form': form,
     })
+
 
 
 

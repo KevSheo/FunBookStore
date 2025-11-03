@@ -3,11 +3,9 @@
 
 {% block content %}
 <div class="container py-5" style="max-width: 1100px;">
-
-  <!-- 📚 Book + Comments Row -->
   <div class="row g-4 align-items-start">
 
-    <!-- Left: Book Info (1/3 width) -->
+    <!-- Left: Book Info -->
     <div class="col-md-4">
       <div class="card shadow-sm border-0 p-4 h-100">
         <div class="text-center mb-3">
@@ -23,11 +21,9 @@
       </div>
     </div>
 
-    <!-- Right: Comments (2/3 width) -->
+    <!-- Right: Comments -->
     <div class="col-md-8">
       <div class="card border-0 shadow-sm p-4">
-        <h4 class="fw-semibold mb-4">Comments ({{ comments.count }})</h4>
-
         {% if user.is_authenticated %}
           <form method="POST" class="mb-4">
             {% csrf_token %}
@@ -42,22 +38,23 @@
 
         <hr>
 
-        {% for comment in comments %}
-          <div class="card mb-3 border-0 shadow-sm">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center mb-1">
-                <strong>{{ comment.user.username }}</strong>
-                <small class="text-muted">{{ comment.created_at|date:"M d, Y H:i" }}</small>
+        {% if comments %}
+          {% for comment in comments %}
+            <div class="card mb-3 border-0 shadow-sm">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <strong>{{ comment.user.username }}</strong>
+                  <small class="text-muted">{{ comment.created_at|date:"M d, Y H:i" }}</small>
+                </div>
+                <p class="mb-0 text-secondary">{{ comment.text }}</p>
               </div>
-              <p class="mb-0 text-secondary">{{ comment.text }}</p>
             </div>
-          </div>
-        {% empty %}
+          {% endfor %}
+        {% else %}
           <p class="text-muted">No comments yet. Be the first to comment!</p>
-        {% endfor %}
+        {% endif %}
       </div>
     </div>
-
   </div>
 </div>
 {% endblock %}
