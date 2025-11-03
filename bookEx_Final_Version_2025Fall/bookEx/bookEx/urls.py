@@ -39,5 +39,6 @@ urlpatterns = [
     path("", include(("bookMng.urls", "bookMng"), namespace="bookMng")),
     path("aboutus/", views.about, name="about"),
 
+
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
